@@ -13,31 +13,32 @@ const RandevuAlScreen = () => {
   const navigation = useNavigation();
 
   const handleSubmit = async () => {
-    if (!adSoyad || !telefon || !tarih || !saat || !hizmet) {
-      Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
-      return;
-    }
+  if (!adSoyad || !telefon || !tarih || !saat || !hizmet) {
+    Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
+    return;
+  }
 
-    try {
-      const response = await axios.post(`${API_BASE_URL}/randevular`, {
-        adSoyad,
-        telefon,
-        tarih,
-        saat,
-        hizmet,
-      });
+  try {
+    const response = await axios.post(`${API_BASE_URL}/randevular`, {
+      kullaniciId: 1,
+      tarih: `${tarih}T00:00:00`,
+      saat: saat,
+      aciklama: hizmet,
+      durum: "Bekliyor",
+    });
 
-      if (response.status === 200 || response.status === 201) {
-        Alert.alert('Başarılı', 'Randevunuz başarıyla alındı!');
-        navigation.goBack();
-      } else {
-        Alert.alert('Hata', 'Randevu oluşturulamadı.');
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Hata', 'Sunucu hatası oluştu.');
+    if (response.status === 200 || response.status === 201) {
+      Alert.alert('Başarılı', 'Randevunuz başarıyla alındı!');
+      navigation.goBack();
+    } else {
+      Alert.alert('Hata', 'Randevu oluşturulamadı.');
     }
-  };
+  } catch (error) {
+    console.error(error);
+    Alert.alert('Hata', 'Sunucu hatası oluştu.');
+  }
+};
+
 
   return (
     <View style={styles.container}>
@@ -52,6 +53,8 @@ const RandevuAlScreen = () => {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Randevu Al</Text>
       </TouchableOpacity>
+
+        <View style={{ height: 60 }} />
     </View>
   );
 };

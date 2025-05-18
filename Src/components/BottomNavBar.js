@@ -14,6 +14,13 @@ export default function BottomNavBar() {
       <TouchableOpacity onPress={() => navigation.navigate('Services')}>
         <Text style={styles.navText}>Hizmetler</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Randevu')}>
+        <Text style={styles.navText}>Randevu</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Randevularim')}>
+        <Text style={styles.navText}>Randevularım</Text>
+      </TouchableOpacity>
+
     </View>
   );
 }

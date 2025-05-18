@@ -8,6 +8,7 @@ import HomeScreen from '../Screens/HomeScreen';
 import ServicesScreen from '../Screens/ServicesScreen';
 import ServiceDetailScreen from '../Screens/ServiceDetailScreen';
 import RandevuAlScreen from '../Screens/RandevuAlScreen';
+import RandevularimScreen from '../Screens/RandevularimScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +23,9 @@ const Navigation = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Services" component={ServicesScreen} />
         <Stack.Screen name="ServiceDetail" component={ServiceDetailScreen} />
-        <Stack.Screen name="RandevuAl" component={RandevuAlScreen}options={{ headerShown: true, title: 'Randevu Al' }}/>
+        <Stack.Screen name="Randevu" component={RandevuAlScreen} options={{ headerShown: true, title: 'Randevu Al' }} />
+        <Stack.Screen name="Randevularim" component={RandevularimScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
