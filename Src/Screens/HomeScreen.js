@@ -1,0 +1,99 @@
+// HomeScreen.js
+import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Linking,
+} from 'react-native';
+import BottomNavBar from '../components/BottomNavBar';
+
+export default function HomeScreen() {
+  const openMap = () => {
+    Linking.openURL(
+      'https://www.google.com/maps/search/?api=1&query=sardağ+plaza,+Yeni,+Muammer+Çorbacıoğlu+Sk.+no:35+D:4+kat+23,+Elazığ'
+    );
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.container}>
+        <Image source={require('../assets/images/anasayfa.jpg')} style={styles.backgroundImage} />
+
+        <View style={styles.logoContainer}>
+          <Image source={require('../assets/images/logo.jpg')} style={styles.logo} />
+          <Text style={styles.headerText}>Elazığ Ayak Bakım Merkezi</Text>
+        </View>
+
+        <Text style={styles.subText}>
+          Sağlığınızı ve estetik beklentilerinizi karşılamak için buradayız.
+        </Text>
+
+        <View style={styles.cardContainer}>
+          <TouchableOpacity style={styles.card}>
+            <Text style={styles.cardText}>👩‍⚕️ Uzman Destek</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.card}>
+            <Text style={styles.cardText}>😊 Güler Yüzlü Hizmet</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.card}>
+            <Text style={styles.cardText}>📞 Danışmanlık</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.aboutBox}>
+          <Text style={styles.aboutTitle}>Hakkımızda</Text>
+          <Text style={styles.aboutText}>
+            Elazığ Ayak Bakım Merkezi olarak, deneyimli ekibimizle ayak ve el
+            bakımında güvenilir hizmetler sunuyoruz. Müşteri memnuniyetini esas
+            alıyor, modern tekniklerle sağlıklı ve estetik çözümler sağlıyoruz.
+          </Text>
+        </View>
+
+        <Text style={styles.sectionTitle}>Başlıca Hizmetlerimiz</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.serviceScroll}>
+          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#8B5CF6' }]}> <Text style={styles.serviceText}>Medikal Bakım</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#F43F5E' }]}> <Text style={styles.serviceText}>Nasır Temizliği</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#F59E0B' }]}> <Text style={styles.serviceText}>Tırnak Batması</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#FB923C' }]}> <Text style={styles.serviceText}>Tırnak Mantar Tedavisi</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#A855F7' }]}> <Text style={styles.serviceText}>Topuk Çatlağı Bakımı</Text></TouchableOpacity>
+        </ScrollView>
+
+        <View style={styles.footerBox}>
+          <Text style={styles.footerTitle}>Ayak Bakım Elazığ</Text>
+          <Text style={styles.footerText}>📍 Sarıdağ Plaza, Yeni Mah. Muammer Çorbacıoğlu Sk. No:35 D:4</Text>
+          <Text style={styles.footerText}>📞 +90 535 494 14 31</Text>
+          <Text style={styles.footerLink} onPress={openMap}>📍 Haritada Görüntüle</Text>
+        </View>
+        <View style={{ height: 80 }} />
+      </ScrollView>
+      <BottomNavBar />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F7F0FF' },
+  backgroundImage: { width: '100%', height: 200, resizeMode: 'cover' },
+  logoContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingTop: 16 },
+  logo: { width: 60, height: 60, resizeMode: 'contain', marginVertical: 10 },
+  headerText: { fontSize: 22, fontWeight: 'bold', color: '#6A0DAD' },
+  subText: { textAlign: 'center', color: '#6A0DAD', marginVertical: 6, paddingHorizontal: 16 },
+  cardContainer: { flexDirection: 'row', justifyContent: 'space-evenly', marginVertical: 10 },
+  card: { backgroundColor: '#fff', padding: 10, borderRadius: 12, elevation: 3 },
+  cardText: { color: '#6A0DAD', fontWeight: 'bold' },
+  aboutBox: { backgroundColor: '#8B5CF6', margin: 16, padding: 16, borderRadius: 12 },
+  aboutTitle: { color: '#fff', fontWeight: 'bold', fontSize: 16, marginBottom: 6 },
+  aboutText: { color: '#fff', fontSize: 14 },
+  sectionTitle: { marginLeft: 16, marginVertical: 10, fontSize: 16, fontWeight: 'bold', color: '#6A0DAD' },
+  serviceScroll: { paddingLeft: 10 },
+  serviceButton: { padding: 12, borderRadius: 10, marginHorizontal: 6, marginBottom: 16 },
+  serviceText: { color: '#fff', fontWeight: 'bold' },
+  footerBox: { backgroundColor: '#E9D8FD', padding: 16, marginTop: 10 },
+  footerTitle: { fontWeight: 'bold', color: '#6A0DAD', fontSize: 16, marginBottom: 6 },
+  footerText: { color: '#4B5563' },
+  footerLink: { color: '#8B5CF6', textDecorationLine: 'underline', marginTop: 6 },
+});

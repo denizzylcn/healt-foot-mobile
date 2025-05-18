@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "211426909549",
+    "project_id": "healthfootapp",
+    "storage_bucket": "healthfootapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211426909549:android:1ce40033b0918c18340e64",
+        "android_client_info": {
+          "package_name": "com.ayakbakim"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUqAo57SxjDfNc0HsMOwgB8OmVv4I6sKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
