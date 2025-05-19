@@ -1,4 +1,3 @@
-// src/screens/RandevularimScreen.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import axios from 'axios';
@@ -25,9 +24,18 @@ export default function RandevularimScreen() {
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
-      <Text style={styles.itemText}>👤 {item.adSoyad}</Text>
-      <Text style={styles.itemText}>📅 {item.tarih} - 🕒 {item.saat}</Text>
-      <Text style={styles.itemText}>💆‍♀️ {item.hizmet}</Text>
+      <Text style={styles.row}>
+        <Text style={styles.label}>📅 Tarih:</Text> {item.tarih}
+      </Text>
+      <Text style={styles.row}>
+        <Text style={styles.label}>⏰ Saat:</Text> {item.saat}
+      </Text>
+      <Text style={styles.row}>
+        <Text style={styles.label}>📝 Açıklama:</Text> {item.aciklama}
+      </Text>
+      <Text style={styles.row}>
+        <Text style={styles.label}>📌 Durum:</Text> {item.durum}
+      </Text>
     </View>
   );
 
@@ -51,7 +59,8 @@ export default function RandevularimScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F7F0FF', padding: 16 },
   title: { fontSize: 22, fontWeight: 'bold', color: '#6A0DAD', marginBottom: 16, textAlign: 'center' },
-  card: { backgroundColor: '#fff', padding: 16, borderRadius: 10, marginBottom: 10, elevation: 2 },
-  itemText: { color: '#333', marginBottom: 4 },
+  card: { backgroundColor: '#fff', padding: 16, borderRadius: 10, marginBottom: 12, elevation: 3 },
+  row: { marginBottom: 6, color: '#333' },
+  label: { fontWeight: 'bold', color: '#4b2a78' },
   emptyText: { textAlign: 'center', color: '#999', marginTop: 20 },
 });

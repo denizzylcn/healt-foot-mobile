@@ -1,5 +1,4 @@
-// HomeScreen.js
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,14 +7,42 @@ import {
   TouchableOpacity,
   Image,
   Linking,
+  TextInput,
+  Alert,
 } from 'react-native';
 import BottomNavBar from '../components/BottomNavBar';
+import { yorumEkle } from '../services/yorumService';
+import { Picker } from '@react-native-picker/picker';
+
 
 export default function HomeScreen() {
+  const [name, setName] = useState('');
+  const [content, setContent] = useState('');
+  const [rating, setRating] = useState('5'); // metin olarak başlatıldı çünkü TextInput
+
   const openMap = () => {
     Linking.openURL(
       'https://www.google.com/maps/search/?api=1&query=sardağ+plaza,+Yeni,+Muammer+Çorbacıoğlu+Sk.+no:35+D:4+kat+23,+Elazığ'
     );
+  };
+
+  const handleSubmit = async () => {
+    const numericRating = parseInt(rating);
+    if (!name || !content || isNaN(numericRating) || numericRating < 1 || numericRating > 5) {
+      Alert.alert('Uyarı', 'Lütfen tüm alanları eksiksiz ve doğru doldurun (puan 1-5 arası).');
+      return;
+    }
+
+    try {
+      await yorumEkle({ name, content, rating: numericRating });
+      Alert.alert('Teşekkürler', 'Yorumunuz başarıyla gönderildi. Onay sonrası yayınlanacaktır.');
+      setName('');
+      setContent('');
+      setRating('5');
+    } catch (error) {
+      console.error('Yorum gönderme hatası:', error);
+      Alert.alert('Hata', 'Yorum gönderilirken bir sorun oluştu.');
+    }
   };
 
   return (
@@ -55,12 +82,60 @@ export default function HomeScreen() {
 
         <Text style={styles.sectionTitle}>Başlıca Hizmetlerimiz</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.serviceScroll}>
-          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#8B5CF6' }]}> <Text style={styles.serviceText}>Medikal Bakım</Text></TouchableOpacity>
-          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#F43F5E' }]}> <Text style={styles.serviceText}>Nasır Temizliği</Text></TouchableOpacity>
-          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#F59E0B' }]}> <Text style={styles.serviceText}>Tırnak Batması</Text></TouchableOpacity>
-          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#FB923C' }]}> <Text style={styles.serviceText}>Tırnak Mantar Tedavisi</Text></TouchableOpacity>
-          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#A855F7' }]}> <Text style={styles.serviceText}>Topuk Çatlağı Bakımı</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#8B5CF6' }]}>
+            <Text style={styles.serviceText}>Medikal Bakım</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#F43F5E' }]}>
+            <Text style={styles.serviceText}>Nasır Temizliği</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#F59E0B' }]}>
+            <Text style={styles.serviceText}>Tırnak Batması</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#FB923C' }]}>
+            <Text style={styles.serviceText}>Tırnak Mantar Tedavisi</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.serviceButton, { backgroundColor: '#A855F7' }]}>
+            <Text style={styles.serviceText}>Topuk Çatlağı Bakımı</Text>
+          </TouchableOpacity>
         </ScrollView>
+
+        <View style={styles.form}>
+          <Text style={styles.formTitle}>Yorum Yap</Text>
+
+          <TextInput
+            placeholder="Ad Soyad"
+            value={name}
+            onChangeText={setName}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Yorumunuz"
+            value={content}
+            onChangeText={setContent}
+            style={[styles.input, { height: 100 }]}
+            multiline
+          />
+
+          <View style={styles.ratingPickerContainer}>
+            <Text style={styles.label}>Puan:</Text>
+            <Picker
+              selectedValue={rating}
+              onValueChange={(itemValue) => setRating(itemValue)}
+              style={styles.picker}
+            >
+              <Picker.Item label="5 - Mükemmel" value="5" />
+              <Picker.Item label="4 - İyi" value="4" />
+              <Picker.Item label="3 - Orta" value="3" />
+              <Picker.Item label="2 - Kötü" value="2" />
+              <Picker.Item label="1 - Berbat" value="1" />
+            </Picker>
+          </View>
+
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Gönder</Text>
+          </TouchableOpacity>
+        </View>
+
 
         <View style={styles.footerBox}>
           <Text style={styles.footerTitle}>Ayak Bakım Elazığ</Text>
@@ -68,6 +143,7 @@ export default function HomeScreen() {
           <Text style={styles.footerText}>📞 +90 535 494 14 31</Text>
           <Text style={styles.footerLink} onPress={openMap}>📍 Haritada Görüntüle</Text>
         </View>
+
         <View style={{ height: 80 }} />
       </ScrollView>
       <BottomNavBar />
@@ -92,8 +168,19 @@ const styles = StyleSheet.create({
   serviceScroll: { paddingLeft: 10 },
   serviceButton: { padding: 12, borderRadius: 10, marginHorizontal: 6, marginBottom: 16 },
   serviceText: { color: '#fff', fontWeight: 'bold' },
+  form: { padding: 20, backgroundColor: '#fff', marginTop: 20, borderTopWidth: 1, borderColor: '#ddd' },
+  formTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10, color: '#4b2a78' },
+  input: { backgroundColor: '#F0EFFF', padding: 12, borderRadius: 8, marginBottom: 10, borderColor: '#ccc', borderWidth: 1 },
+  button: { backgroundColor: '#6A0DAD', padding: 14, borderRadius: 8, alignItems: 'center' },
+  buttonText: { color: '#fff', fontWeight: 'bold' },
   footerBox: { backgroundColor: '#E9D8FD', padding: 16, marginTop: 10 },
   footerTitle: { fontWeight: 'bold', color: '#6A0DAD', fontSize: 16, marginBottom: 6 },
   footerText: { color: '#4B5563' },
   footerLink: { color: '#8B5CF6', textDecorationLine: 'underline', marginTop: 6 },
+
+  // 🔽 Eklenen stiller (rating dropdown için)
+  ratingPickerContainer: { marginBottom: 10 },
+  label: { fontWeight: 'bold', marginBottom: 6, color: '#4b2a78' },
+  picker: { backgroundColor: '#fff', borderRadius: 8 },
 });
+

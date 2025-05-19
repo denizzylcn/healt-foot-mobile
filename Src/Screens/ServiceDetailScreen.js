@@ -35,15 +35,20 @@ export default function ServiceDetailScreen() {
         <View style={styles.heroText}>
           <Text style={styles.title}>{service.title}</Text>
           <Text style={styles.description}>{service.description}</Text>
+
           <TouchableOpacity
             style={styles.ctaButton}
-            onPress={() => navigation.navigate('Randevu')}
+            onPress={() =>
+              navigation.navigate('Randevu', {
+                aciklama: service.title,
+              })
+            }
           >
-            <Text style={{ color: '#4b2a78', fontWeight: 'bold' }}>
-              Ücretsiz Randevu
-            </Text>
+            <Text style={{ color: '#4b2a78', fontWeight: 'bold' }}>Ücretsiz Randevu</Text>
           </TouchableOpacity>
+
         </View>
+
         <Image source={imageSource} style={styles.image} />
       </View>
 
@@ -53,9 +58,9 @@ export default function ServiceDetailScreen() {
             <Text style={styles.detailTitle}>{detail.title}</Text>
             {detail.text.split('\n').map((line, j) =>
               line.trim().startsWith('-') ||
-              line.trim().startsWith('•') ||
-              line.trim().startsWith('🔸') ||
-              line.trim().startsWith('🔹') ? (
+                line.trim().startsWith('•') ||
+                line.trim().startsWith('🔸') ||
+                line.trim().startsWith('🔹') ? (
                 <Text key={j} style={styles.bullet}>• {line.replace(/^[-•🔸🔹]\s?/, '')}</Text>
               ) : (
                 <Text key={j} style={styles.paragraph}>{line}</Text>

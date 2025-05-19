@@ -1,11 +1,23 @@
-// src/screens/RandevuAlScreen.js
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Platform } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+// src/Screens/RandevuAlScreen.js
+
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Platform,
+} from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { createRandevu } from '../services/randevuService';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const RandevuAlScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+
   const [tarih, setTarih] = useState(new Date());
   const [saat, setSaat] = useState('');
   const [aciklama, setAciklama] = useState('');
@@ -13,11 +25,13 @@ const RandevuAlScreen = () => {
   const [telefon, setTelefon] = useState('');
   const [showPicker, setShowPicker] = useState(false);
 
-  const navigation = useNavigation();
+  useEffect(() => {
+    if (route.params?.aciklama) {
+      setAciklama(route.params.aciklama);
+    }
+  }, [route.params]);
 
   const handleSubmit = async () => {
-    console.log("handleSubmit çağrıldı");
-
     if (!tarih || !saat || !aciklama || !email || !telefon) {
       Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
       return;
@@ -25,7 +39,7 @@ const RandevuAlScreen = () => {
 
     const yeniRandevu = {
       kullaniciId: 1,
-      tarih: tarih.toISOString().split('T')[0], // sadece "yyyy-mm-dd"
+      tarih: tarih.toISOString().split('T')[0],
       saat,
       aciklama,
       email,
@@ -34,10 +48,7 @@ const RandevuAlScreen = () => {
     };
 
     try {
-      console.log('API isteği gönderiliyor:', yeniRandevu);
       const response = await createRandevu(yeniRandevu);
-      console.log('API cevabı:', response);
-
       if (response && (response.id || response.success)) {
         Alert.alert('Başarılı', 'Randevunuz başarıyla oluşturuldu!');
         navigation.goBack();
@@ -110,9 +121,37 @@ const RandevuAlScreen = () => {
 export default RandevuAlScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F7F0FF', padding: 20, justifyContent: 'center' },
-  title: { fontSize: 24, fontWeight: 'bold', color: '#6A0DAD', marginBottom: 20, textAlign: 'center' },
-  input: { backgroundColor: '#fff', padding: 14, borderRadius: 8, marginBottom: 12, borderWidth: 1, borderColor: '#ccc' },
-  button: { backgroundColor: '#6A0DAD', padding: 16, borderRadius: 10, alignItems: 'center', marginTop: 8 },
-  buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
+  container: {
+    flex: 1,
+    backgroundColor: '#F7F0FF',
+    padding: 20,
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#6A0DAD',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    backgroundColor: '#fff',
+    padding: 14,
+    borderRadius: 8,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  button: {
+    backgroundColor: '#6A0DAD',
+    padding: 16,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
 });

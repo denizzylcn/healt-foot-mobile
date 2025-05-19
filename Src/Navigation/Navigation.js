@@ -9,6 +9,8 @@ import ServicesScreen from '../Screens/ServicesScreen';
 import ServiceDetailScreen from '../Screens/ServiceDetailScreen';
 import RandevuAlScreen from '../Screens/RandevuAlScreen';
 import RandevularimScreen from '../Screens/RandevularimScreen';
+import YorumlarScreen from '../Screens/YorumlarScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +27,8 @@ const Navigation = () => {
         <Stack.Screen name="ServiceDetail" component={ServiceDetailScreen} />
         <Stack.Screen name="Randevu" component={RandevuAlScreen} options={{ headerShown: true, title: 'Randevu Al' }} />
         <Stack.Screen name="Randevularim" component={RandevularimScreen} />
+        <Stack.Screen name="Yorumlar" component={YorumlarScreen} />
+
 
       </Stack.Navigator>
     </NavigationContainer>
