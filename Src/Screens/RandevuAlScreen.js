@@ -1,29 +1,32 @@
 // src/Screens/RandevuAlScreen.js
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  Platform,
+  View, Text, TextInput, TouchableOpacity,
+  StyleSheet, Alert, Platform
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { createRandevu } from '../services/randevuService';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { createRandevu } from '../services/randevuService';
 
-const RandevuAlScreen = () => {
+export default function RandevuAlScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-
   const [tarih, setTarih] = useState(new Date());
   const [saat, setSaat] = useState('');
   const [aciklama, setAciklama] = useState('');
   const [email, setEmail] = useState('');
   const [telefon, setTelefon] = useState('');
   const [showPicker, setShowPicker] = useState(false);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <Text style={{ fontSize: 24, color: '#fff', marginLeft: 16 }}>☰</Text>
+      </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
     if (route.params?.aciklama) {
@@ -56,7 +59,6 @@ const RandevuAlScreen = () => {
         Alert.alert('Hata', 'Sunucudan beklenen yanıt alınamadı.');
       }
     } catch (error) {
-      console.error('Hata detayları:', error.response?.data || error.message);
       Alert.alert('Hata', 'Randevu oluşturulurken bir hata oluştu.');
     }
   };
@@ -71,11 +73,9 @@ const RandevuAlScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Randevu Al</Text>
-
       <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.input}>
         <Text>{tarih.toDateString()}</Text>
       </TouchableOpacity>
-
       {showPicker && (
         <DateTimePicker
           value={tarih}
@@ -84,74 +84,21 @@ const RandevuAlScreen = () => {
           onChange={handleDateChange}
         />
       )}
-
-      <TextInput
-        placeholder="Saat (HH:MM)"
-        value={saat}
-        onChangeText={setSaat}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Açıklama"
-        value={aciklama}
-        onChangeText={setAciklama}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="E-posta"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-        keyboardType="email-address"
-      />
-      <TextInput
-        placeholder="Telefon"
-        value={telefon}
-        onChangeText={setTelefon}
-        style={styles.input}
-        keyboardType="phone-pad"
-      />
+      <TextInput placeholder="Saat (HH:MM)" value={saat} onChangeText={setSaat} style={styles.input} />
+      <TextInput placeholder="Açıklama" value={aciklama} onChangeText={setAciklama} style={styles.input} />
+      <TextInput placeholder="E-posta" value={email} onChangeText={setEmail} style={styles.input} keyboardType="email-address" />
+      <TextInput placeholder="Telefon" value={telefon} onChangeText={setTelefon} style={styles.input} keyboardType="phone-pad" />
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Randevu Al</Text>
       </TouchableOpacity>
     </View>
   );
-};
-
-export default RandevuAlScreen;
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F7F0FF',
-    padding: 20,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#6A0DAD',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  input: {
-    backgroundColor: '#fff',
-    padding: 14,
-    borderRadius: 8,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#ccc',
-  },
-  button: {
-    backgroundColor: '#6A0DAD',
-    padding: 16,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
+  container: { flex: 1, backgroundColor: '#F7F0FF', padding: 20, justifyContent: 'center' },
+  title: { fontSize: 24, fontWeight: 'bold', color: '#6A0DAD', marginBottom: 20, textAlign: 'center' },
+  input: { backgroundColor: '#fff', padding: 14, borderRadius: 8, marginBottom: 12, borderWidth: 1, borderColor: '#ccc' },
+  button: { backgroundColor: '#6A0DAD', padding: 16, borderRadius: 10, alignItems: 'center', marginTop: 8 },
+  buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
 });

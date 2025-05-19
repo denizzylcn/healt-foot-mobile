@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import AuthScreen from '../Screens/AuthScreen';
 import LoginScreen from '../Screens/LoginScreen';
 import RegisterScreen from '../Screens/RegisterScreen';
@@ -12,27 +12,25 @@ import RandevularimScreen from '../Screens/RandevularimScreen';
 import YorumlarScreen from '../Screens/YorumlarScreen';
 
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
-const Navigation = () => {
+export default function Navigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Auth" component={AuthScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        {/* Girişten sonra yönlendirilecek ana ekran */}
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Services" component={ServicesScreen} />
-        <Stack.Screen name="ServiceDetail" component={ServiceDetailScreen} />
-        <Stack.Screen name="Randevu" component={RandevuAlScreen} options={{ headerShown: true, title: 'Randevu Al' }} />
-        <Stack.Screen name="Randevularim" component={RandevularimScreen} />
-        <Stack.Screen name="Yorumlar" component={YorumlarScreen} />
-
-
-      </Stack.Navigator>
+      <Drawer.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: '#6A0DAD' },
+          headerTintColor: '#fff',
+          drawerActiveTintColor: '#6A0DAD',
+          drawerLabelStyle: { fontWeight: 'bold' },
+        }}
+      >
+        <Drawer.Screen name="Ana Sayfa" component={HomeScreen} />
+        <Drawer.Screen name="Hizmetlerimiz" component={ServicesScreen} />
+        <Drawer.Screen name="Randevu Al" component={RandevuAlScreen} />
+        <Drawer.Screen name="Randevularım" component={RandevularimScreen} />
+        <Drawer.Screen name="Yorumlar" component={YorumlarScreen} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
-};
-
-export default Navigation;
+}

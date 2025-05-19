@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { getYorumlar } from '../services/yorumService';
+import { useNavigation } from '@react-navigation/native';
 
 export default function YorumlarScreen() {
   const [yorumlar, setYorumlar] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+         <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginRight: 16 }}>
+          <Text style={{ fontSize: 22, color: '#6A0DAD' }}>☰</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+  
   useEffect(() => {
     const fetchYorumlar = async () => {
       try {

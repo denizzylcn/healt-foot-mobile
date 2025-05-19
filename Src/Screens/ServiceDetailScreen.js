@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,16 @@ export default function ServiceDetailScreen() {
   const route = useRoute();
   const navigation = useNavigation();
   const { serviceId } = route.params;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginRight: 16 }}>
+          <Text style={{ fontSize: 22, color: '#6A0DAD' }}>☰</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   const service = services.find((item) => item.id === serviceId);
 
@@ -46,7 +56,6 @@ export default function ServiceDetailScreen() {
           >
             <Text style={{ color: '#4b2a78', fontWeight: 'bold' }}>Ücretsiz Randevu</Text>
           </TouchableOpacity>
-
         </View>
 
         <Image source={imageSource} style={styles.image} />
@@ -58,9 +67,9 @@ export default function ServiceDetailScreen() {
             <Text style={styles.detailTitle}>{detail.title}</Text>
             {detail.text.split('\n').map((line, j) =>
               line.trim().startsWith('-') ||
-                line.trim().startsWith('•') ||
-                line.trim().startsWith('🔸') ||
-                line.trim().startsWith('🔹') ? (
+              line.trim().startsWith('•') ||
+              line.trim().startsWith('🔸') ||
+              line.trim().startsWith('🔹') ? (
                 <Text key={j} style={styles.bullet}>• {line.replace(/^[-•🔸🔹]\s?/, '')}</Text>
               ) : (
                 <Text key={j} style={styles.paragraph}>{line}</Text>

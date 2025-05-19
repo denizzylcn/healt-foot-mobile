@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import {
   View,
   Text,
@@ -10,15 +10,30 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import BottomNavBar from '../components/BottomNavBar';
 import { yorumEkle } from '../services/yorumService';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function HomeScreen() {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
-  const [rating, setRating] = useState('5'); // metin olarak başlatıldı çünkü TextInput
+  const [rating, setRating] = useState('5');
+
+  const navigation = useNavigation();
+
+  // 🍔 Hamburger menu
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <Text style={{ fontSize: 24, color: '#fff', marginLeft: 16 }}>☰</Text>
+      </TouchableOpacity>
+      ),
+      headerStyle: { backgroundColor: '#6A0DAD' },
+      headerTintColor: '#fff',
+    });
+  }, [navigation]);
 
   const openMap = () => {
     Linking.openURL(
@@ -47,7 +62,7 @@ export default function HomeScreen() {
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
         <Image source={require('../assets/images/anasayfa.jpg')} style={styles.backgroundImage} />
 
         <View style={styles.logoContainer}>
@@ -74,9 +89,7 @@ export default function HomeScreen() {
         <View style={styles.aboutBox}>
           <Text style={styles.aboutTitle}>Hakkımızda</Text>
           <Text style={styles.aboutText}>
-            Elazığ Ayak Bakım Merkezi olarak, deneyimli ekibimizle ayak ve el
-            bakımında güvenilir hizmetler sunuyoruz. Müşteri memnuniyetini esas
-            alıyor, modern tekniklerle sağlıklı ve estetik çözümler sağlıyoruz.
+            Elazığ Ayak Bakım Merkezi olarak, deneyimli ekibimizle ayak ve el bakımında güvenilir hizmetler sunuyoruz. Müşteri memnuniyetini esas alıyor, modern tekniklerle sağlıklı ve estetik çözümler sağlıyoruz.
           </Text>
         </View>
 
@@ -99,9 +112,9 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </ScrollView>
 
+        {/* Yorum Formu */}
         <View style={styles.form}>
           <Text style={styles.formTitle}>Yorum Yap</Text>
-
           <TextInput
             placeholder="Ad Soyad"
             value={name}
@@ -115,7 +128,6 @@ export default function HomeScreen() {
             style={[styles.input, { height: 100 }]}
             multiline
           />
-
           <View style={styles.ratingPickerContainer}>
             <Text style={styles.label}>Puan:</Text>
             <Picker
@@ -130,12 +142,10 @@ export default function HomeScreen() {
               <Picker.Item label="1 - Berbat" value="1" />
             </Picker>
           </View>
-
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Gönder</Text>
           </TouchableOpacity>
         </View>
-
 
         <View style={styles.footerBox}>
           <Text style={styles.footerTitle}>Ayak Bakım Elazığ</Text>
@@ -143,10 +153,7 @@ export default function HomeScreen() {
           <Text style={styles.footerText}>📞 +90 535 494 14 31</Text>
           <Text style={styles.footerLink} onPress={openMap}>📍 Haritada Görüntüle</Text>
         </View>
-
-        <View style={{ height: 80 }} />
       </ScrollView>
-      <BottomNavBar />
     </View>
   );
 }
@@ -171,16 +178,13 @@ const styles = StyleSheet.create({
   form: { padding: 20, backgroundColor: '#fff', marginTop: 20, borderTopWidth: 1, borderColor: '#ddd' },
   formTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10, color: '#4b2a78' },
   input: { backgroundColor: '#F0EFFF', padding: 12, borderRadius: 8, marginBottom: 10, borderColor: '#ccc', borderWidth: 1 },
+  ratingPickerContainer: { marginBottom: 10 },
+  label: { fontWeight: 'bold', marginBottom: 6, color: '#4b2a78' },
+  picker: { backgroundColor: '#fff', borderRadius: 8 },
   button: { backgroundColor: '#6A0DAD', padding: 14, borderRadius: 8, alignItems: 'center' },
   buttonText: { color: '#fff', fontWeight: 'bold' },
   footerBox: { backgroundColor: '#E9D8FD', padding: 16, marginTop: 10 },
   footerTitle: { fontWeight: 'bold', color: '#6A0DAD', fontSize: 16, marginBottom: 6 },
   footerText: { color: '#4B5563' },
   footerLink: { color: '#8B5CF6', textDecorationLine: 'underline', marginTop: 6 },
-
-  // 🔽 Eklenen stiller (rating dropdown için)
-  ratingPickerContainer: { marginBottom: 10 },
-  label: { fontWeight: 'bold', marginBottom: 6, color: '#4b2a78' },
-  picker: { backgroundColor: '#fff', borderRadius: 8 },
 });
-

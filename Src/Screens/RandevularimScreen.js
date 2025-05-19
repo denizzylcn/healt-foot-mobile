@@ -2,10 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { API_BASE_URL } from '../config/api';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
+
 
 export default function RandevularimScreen() {
   const [randevular, setRandevular] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <Text style={{ fontSize: 24, color: '#fff', marginLeft: 16 }}>☰</Text>
+      </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
     fetchRandevular();
@@ -62,5 +76,6 @@ const styles = StyleSheet.create({
   card: { backgroundColor: '#fff', padding: 16, borderRadius: 10, marginBottom: 12, elevation: 3 },
   row: { marginBottom: 6, color: '#333' },
   label: { fontWeight: 'bold', color: '#4b2a78' },
+   itemText: { color: '#333', marginBottom: 4 },
   emptyText: { textAlign: 'center', color: '#999', marginTop: 20 },
 });
