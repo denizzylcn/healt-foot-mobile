@@ -14,7 +14,7 @@ export default function RandevularimScreen() {
 
   const fetchRandevular = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/randevular`);
+      const response = await axios.get(`${API_BASE_URL}/randevu/list`);
       setRandevular(response.data);
     } catch (error) {
       console.error('Randevular alınamadı:', error);
