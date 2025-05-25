@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { register } from '../services/authService';
+import auth from '@react-native-firebase/auth';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -32,18 +32,15 @@ const RegisterScreen = () => {
     }
 
     try {
-      const userData = { name, email, password };
-      const response = await register(userData);
+      // ✅ Firebase üzerinden kullanıcıyı kaydet
+      await auth().createUserWithEmailAndPassword(email, password);
 
-      if (response && response.token) {
-        Alert.alert('Başarılı', 'Kayıt başarılı!');
-        navigation.replace('Login');
-      } else {
-        Alert.alert('Hata', 'Kayıt işlemi başarısız.');
-      }
+      // Kullanıcı adı gibi ek bilgiler Firestore'a yazılabilir (isteğe bağlı)
+      Alert.alert('Başarılı', 'Kayıt işlemi başarılı!');
+      navigation.replace('Login');
     } catch (error) {
-      console.error(error);
-      Alert.alert('Hata', 'Kayıt sırasında bir hata oluştu.');
+      console.error('Kayıt hatası:', error);
+      Alert.alert('Hata', error.message);
     }
   };
 
