@@ -49,13 +49,14 @@ export default function ServiceDetailScreen() {
           <TouchableOpacity
             style={styles.ctaButton}
             onPress={() =>
-              navigation.navigate('Randevu', {
+              navigation.navigate('RandevuAl', {
                 aciklama: service.title,
               })
             }
           >
             <Text style={{ color: '#4b2a78', fontWeight: 'bold' }}>Ücretsiz Randevu</Text>
           </TouchableOpacity>
+
         </View>
 
         <Image source={imageSource} style={styles.image} />
@@ -67,9 +68,9 @@ export default function ServiceDetailScreen() {
             <Text style={styles.detailTitle}>{detail.title}</Text>
             {detail.text.split('\n').map((line, j) =>
               line.trim().startsWith('-') ||
-              line.trim().startsWith('•') ||
-              line.trim().startsWith('🔸') ||
-              line.trim().startsWith('🔹') ? (
+                line.trim().startsWith('•') ||
+                line.trim().startsWith('🔸') ||
+                line.trim().startsWith('🔹') ? (
                 <Text key={j} style={styles.bullet}>• {line.replace(/^[-•🔸🔹]\s?/, '')}</Text>
               ) : (
                 <Text key={j} style={styles.paragraph}>{line}</Text>

@@ -1,5 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import { getYorumlar } from '../services/yorumService';
 import { useNavigation } from '@react-navigation/native';
 
@@ -11,18 +18,18 @@ export default function YorumlarScreen() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-         <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginRight: 16 }}>
+        <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginRight: 16 }}>
           <Text style={{ fontSize: 22, color: '#6A0DAD' }}>☰</Text>
         </TouchableOpacity>
       ),
     });
   }, [navigation]);
-  
+
   useEffect(() => {
     const fetchYorumlar = async () => {
       try {
         const data = await getYorumlar();
-        const onayliYorumlar = data.filter(y => y.name && y.content && y.rating); // istersen durum kontrolü de ekleyebilirim
+        const onayliYorumlar = data.filter(y => y.name && y.content && y.rating);
         setYorumlar(onayliYorumlar);
       } catch (error) {
         console.error('Yorumlar alınamadı:', error);

@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import axios from 'axios';
 import { API_BASE_URL } from '../config/api';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native';
-
 
 export default function RandevularimScreen() {
   const [randevular, setRandevular] = useState([]);
@@ -14,9 +19,9 @@ export default function RandevularimScreen() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-        <Text style={{ fontSize: 24, color: '#fff', marginLeft: 16 }}>☰</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginRight: 16 }}>
+          <Text style={{ fontSize: 24, color: '#6A0DAD' }}>☰</Text>
+        </TouchableOpacity>
       ),
     });
   }, [navigation]);
@@ -54,7 +59,11 @@ export default function RandevularimScreen() {
   );
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#6A0DAD" style={{ flex: 1, justifyContent: 'center' }} />;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#6A0DAD" />
+      </View>
+    );
   }
 
   return (
@@ -64,7 +73,9 @@ export default function RandevularimScreen() {
         data={randevular}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
-        ListEmptyComponent={<Text style={styles.emptyText}>Henüz randevunuz bulunmamaktadır.</Text>}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>Henüz randevunuz bulunmamaktadır.</Text>
+        }
       />
     </View>
   );
@@ -72,10 +83,21 @@ export default function RandevularimScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F7F0FF', padding: 16 },
-  title: { fontSize: 22, fontWeight: 'bold', color: '#6A0DAD', marginBottom: 16, textAlign: 'center' },
-  card: { backgroundColor: '#fff', padding: 16, borderRadius: 10, marginBottom: 12, elevation: 3 },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#6A0DAD',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  card: {
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 12,
+    elevation: 3,
+  },
   row: { marginBottom: 6, color: '#333' },
   label: { fontWeight: 'bold', color: '#4b2a78' },
-   itemText: { color: '#333', marginBottom: 4 },
   emptyText: { textAlign: 'center', color: '#999', marginTop: 20 },
 });

@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { register } from '../services/authService';
@@ -29,18 +32,12 @@ const RegisterScreen = () => {
     }
 
     try {
-      const userData = {
-        name,
-        email,
-        password,
-      };
-
+      const userData = { name, email, password };
       const response = await register(userData);
 
       if (response && response.token) {
-        console.log('Kayıt başarılı, token:', response.token);
         Alert.alert('Başarılı', 'Kayıt başarılı!');
-        navigation.navigate('Login');
+        navigation.replace('Login');
       } else {
         Alert.alert('Hata', 'Kayıt işlemi başarısız.');
       }
@@ -51,58 +48,63 @@ const RegisterScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Kayıt Ol</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={{ flex: 1 }}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.title}>Kayıt Ol</Text>
 
-      <TextInput
-        placeholder="Ad Soyad"
-        value={name}
-        onChangeText={setName}
-        style={styles.input}
-      />
+        <TextInput
+          placeholder="Ad Soyad"
+          value={name}
+          onChangeText={setName}
+          style={styles.input}
+        />
 
-      <TextInput
-        placeholder="E-posta"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+        <TextInput
+          placeholder="E-posta"
+          value={email}
+          onChangeText={setEmail}
+          style={styles.input}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
 
-      <TextInput
-        placeholder="Şifre"
-        value={password}
-        onChangeText={setPassword}
-        style={styles.input}
-        secureTextEntry
-      />
+        <TextInput
+          placeholder="Şifre"
+          value={password}
+          onChangeText={setPassword}
+          style={styles.input}
+          secureTextEntry
+        />
 
-      <TextInput
-        placeholder="Şifre Tekrar"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        style={styles.input}
-        secureTextEntry
-      />
+        <TextInput
+          placeholder="Şifre Tekrar"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          style={styles.input}
+          secureTextEntry
+        />
 
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Kayıt Ol</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Kayıt Ol</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.linkText}>Zaten hesabın var mı? Giriş Yap</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.linkText}>Zaten hesabın var mı? Giriş Yap</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#F7F0FF',
     padding: 20,
     justifyContent: 'center',
+    flexGrow: 1,
   },
   title: {
     fontSize: 28,

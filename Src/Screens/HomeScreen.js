@@ -27,8 +27,8 @@ export default function HomeScreen() {
     navigation.setOptions({
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
-        <Text style={{ fontSize: 24, color: '#fff', marginLeft: 16 }}>☰</Text>
-      </TouchableOpacity>
+          <Text style={{ fontSize: 24, color: '#fff', marginLeft: 16 }}>☰</Text>
+        </TouchableOpacity>
       ),
       headerStyle: { backgroundColor: '#6A0DAD' },
       headerTintColor: '#fff',
@@ -66,8 +66,15 @@ export default function HomeScreen() {
         <Image source={require('../assets/images/anasayfa.jpg')} style={styles.backgroundImage} />
 
         <View style={styles.logoContainer}>
-          <Image source={require('../assets/images/logo.jpg')} style={styles.logo} />
-          <Text style={styles.headerText}>Elazığ Ayak Bakım Merkezi</Text>
+          <Image
+            source={require('../assets/images/logo.jpg')}
+            style={styles.logo}
+          />
+
+          {/* Araya boşluk eklemek için Text'i View içinde sarmaladık */}
+          <View style={{ marginLeft: 16 }}>
+            <Text style={styles.headerText}>Elazığ Ayak Bakım Merkezi</Text>
+          </View>
         </View>
 
         <Text style={styles.subText}>
@@ -162,7 +169,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F7F0FF' },
   backgroundImage: { width: '100%', height: 200, resizeMode: 'cover' },
   logoContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingTop: 16 },
-  logo: { width: 60, height: 60, resizeMode: 'contain', marginVertical: 10 },
+  logo: { width: 60, height: 60, resizeMode: 'contain', marginVertical: 16 },
   headerText: { fontSize: 22, fontWeight: 'bold', color: '#6A0DAD' },
   subText: { textAlign: 'center', color: '#6A0DAD', marginVertical: 6, paddingHorizontal: 16 },
   cardContainer: { flexDirection: 'row', justifyContent: 'space-evenly', marginVertical: 10 },

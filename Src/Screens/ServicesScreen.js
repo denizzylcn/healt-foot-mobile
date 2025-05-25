@@ -1,5 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import services from '../assets/data/services.json';
 
@@ -9,7 +15,7 @@ export default function ServicesScreen() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-         <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginRight: 16 }}>
+        <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginRight: 16 }}>
           <Text style={{ fontSize: 22, color: '#6A0DAD' }}>☰</Text>
         </TouchableOpacity>
       ),
@@ -19,13 +25,13 @@ export default function ServicesScreen() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Tüm Hizmetlerimiz</Text>
-      {services.map((service, index) => (
+      {services.map((service) => (
         <TouchableOpacity
-          key={item.id}
+          key={service.id}
           style={styles.card}
-          onPress={() => navigation.navigate('ServiceDetail', { serviceId: item.id })}
+          onPress={() => navigation.navigate('ServiceDetail', { serviceId: service.id })}
         >
-          <Text style={styles.cardText}>{item.title}</Text>
+          <Text style={styles.cardText}>{service.title}</Text>
         </TouchableOpacity>
       ))}
     </ScrollView>
@@ -53,8 +59,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   cardText: {
-    color:  '#4b2a78',
+    color: '#4b2a78',
     fontWeight: 'bold',
-    
   },
 });
